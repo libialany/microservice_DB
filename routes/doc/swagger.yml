@@ -1,0 +1,44 @@
+---
+swagger: '2.0'
+info:
+  title: API de Database
+  description: API para la adición de records DNS
+  version: '1.0'
+tags:
+  - name: database
+    description: database
+paths:
+  /crear_database:
+    x-order: 1
+    post:
+      summary: crear database
+      consumes:
+        - application/json
+      parameters:
+        - name: crear_record
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              nombre:
+                type: string
+                example: 'database_db'
+                description: Nombre de la db
+              usuario:
+                type: string
+                example: 'usr'
+                description: Usuario db
+              password:
+                type: string
+                example: 'pass'
+                description: Password db
+              esquemas:
+                type: array
+                items:
+                  type: string
+                example: [esquema1, esquema2]
+                description: Esquemas          
+      responses:
+        201:
+          description: DB creado exitosamente
