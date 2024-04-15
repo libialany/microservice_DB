@@ -16,8 +16,6 @@ WORKDIR /home/db_demo/app/
 COPY requirements.txt /home/db_demo/app/requirements.txt
 COPY requirements.yml /home/db_demo/app/requirements.yml
 
-
-
 # Install Python dependencies and Ansible roles
 RUN pip install -r requirements.txt && \
     ansible-galaxy install -r requirements.yml
@@ -36,8 +34,6 @@ USER db_demo
 
 RUN mkdir /home/db_demo/.ssh/ && \
     ssh-keygen -t rsa -N "" -f /home/db_demo/.ssh/id_rsa
-
-
 # Expose the port your application listens on
 EXPOSE 5000
 

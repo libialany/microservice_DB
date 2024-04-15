@@ -1,0 +1,32 @@
+- name: Instalando python3 pip docker
+  ansible.builtin.apt:
+    name:
+      - python3-docker
+    state: present
+    force_apt_get: true
+    update_cache: true
+  become: true
+  register: apt_packages
+  when: use_docker | bool
+- name: ejecuta un backup de un postgres container
+  community.docker.docker_container_exec:
+    container: "{{ nombre_contenedor }}"
+    command: "/bin/bash -c 'pg_dump -U {{db_username}} -w -F t {{db_name}} >  {{archivo_salida}}.tar -v 2> {{archivo_salida}}_backup.log'"
+    chdir: /tmp
+  register: result
+  when: use_docker | bool
+- name: ejecuta el backup MINIO
+  community.docker.docker_container_exec:
+    container: "{{ nombre_contenedor }}"
+    command:  'curl -X POST "{{url_db}}/upload-backup" -H "accept: application/json" -H "Content-Type: multipart/form-data" -F "file=@{{archivo_salida}}.tar;type=application/x-tar"'
+    chdir: /tmp
+  register: result
+  when: use_docker | bool
+- name: ejecuta un backup de un postgres sin docker
+  command: pg_dump -U {{ db_username }} -d {{ db_name }} -f "{{ archivo_salida }}.sql" -w
+  args:
+    executable: /usr/bin/pg_dump
+  environment:
+    PGPASSWORD: "{{ db_password }}"
+  delegate_to: "{{ db_host }}"
+  when: not use_docker | bool

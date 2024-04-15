@@ -1,0 +1,17 @@
+galaxy_info:
+  author: None
+  description: Se encarga de hacer backups de base de  datos.
+  company: None
+
+  license: license (GPL-2.0-or-later, MIT, etc)
+
+  min_ansible_version: 2.1
+
+  platforms:
+  - name: Debian
+    versions:
+    - 11
+
+  galaxy_tags: []
+
+dependencies: []

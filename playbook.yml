@@ -1,0 +1,7 @@
+- name: microservicio de creacion de base de datos y backups
+  hosts: c1
+
+  roles:
+    - role: backup
+      tags:
+        - backup

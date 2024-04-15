@@ -1,13 +1,60 @@
 ---
 swagger: '2.0'
 info:
-  title: API de Database
-  description: API para la adición de records DNS
+  title: API de microservicio db
+  description: API para el manejo de operaciones con base de datos
   version: '1.0'
 tags:
-  - name: database
-    description: database
+  - name: microservicio_db
+    description: Manejo de operaciones con base de datos
 paths:
+  /estado:
+    x-order: 6
+    get:
+      summary: estado 
+      consumes:
+        - application/json
+      responses:
+        201:
+  /backup:
+    x-order: 6
+    post:
+      summary: Backup de una base de datos
+      consumes:
+        - application/json
+      parameters:
+        - name: Backup
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              db_name:
+                type: string
+                example: test_db
+                description: db_name 
+              db_host:
+                type: string
+                example: localhost
+                description: none 
+              db_port:
+                type: string
+                example: 5432
+                description: none
+              db_username:
+                type: string
+                example: test
+                description: none 
+              db_password:
+                type: string
+                example: test
+                description: none
+              use_docker:
+                type: string
+                description: none
+      responses:
+        201:
+          description: Backup ejecutado exitosamente
   /crear_database:
     x-order: 1
     post:
@@ -38,7 +85,238 @@ paths:
                 items:
                   type: string
                 example: [esquema1, esquema2]
-                description: Esquemas          
+                description: Esquemas
+              db_nombre:
+                type: string
+                example: 'nombre_db'
+                description: DBMS Nombre de la base de datos
+              db_user:
+                type: string
+                example: 'usuario_db'
+                description: DBMS Usuario de la base de datos
+              db_password:
+                type: string
+                example: 'contraseña_db'
+                description: DBMS Contraseña de la base de datos
+              db_host:
+                type: string
+                example: 'host_db'
+                description: DBMS Host de la base de datos
+              db_port:
+                type: string
+                example: 'puerto_db'
+                description: DBMS Puerto de la base de datos
       responses:
         201:
-          description: DB creado exitosamente
+          description: creado exitosamente
+        400:
+          description: Bad request
+        500:
+          description: Internal server error      
+  
+  /upload-backup:
+      x-order: 6
+      post:
+        summary: Upload a file
+        consumes:
+          - multipart/form-data
+        parameters:
+          - name: file
+            in: formData
+            description: The file to upload
+            required: true
+            type: file
+        responses:
+          200:
+            description: File uploaded successfully
+          400:
+            description: Bad request
+          500:
+            description: Internal server error
+  /download-backup:
+    x-order: 7
+    post:
+      summary: Download backup de una base de datos
+      consumes:
+        - application/json
+      parameters:
+        - name: Download Backup
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              nombre_backup:
+                type: string
+                example: nombre_objeto123
+                description: nombre objeto guardado en el bucket 
+      responses:
+        201:
+          description: Backup recuperado exitosamente
+  /editar:
+    x-order: 1
+    post:
+      summary: editar database
+      consumes:
+        - application/json
+      parameters:
+        - name: crear_record
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              nombre:
+                type: string
+                example: 'database_db'
+                description: Nombre de la db
+              usuario:
+                type: string
+                example: 'usr'
+                description: Usuario db
+              password:
+                type: string
+                example: 'pass'
+                description: Password db
+              esquemas:
+                type: array
+                items:
+                  type: string
+                example: [esquema1, esquema2]
+                description: Esquemas
+              db_nombre:
+                type: string
+                example: 'nombre_db'
+                description: DBMS Nombre de la base de datos
+              db_user:
+                type: string
+                example: 'usuario_db'
+                description: DBMS Usuario de la base de datos
+              db_password:
+                type: string
+                example: 'contraseña_db'
+                description: DBMS Contraseña de la base de datos
+              db_host:
+                type: string
+                example: 'host_db'
+                description: DBMS Host de la base de datos
+              db_port:
+                type: string
+                example: 'puerto_db'
+                description: DBMS Puerto de la base de datos
+      responses:
+        201:
+          description: editado exitosamente
+        400:
+          description: Bad request
+        500:
+          description: Internal server error      
+  /eliminar:
+    x-order: 1
+    post:
+      summary: eliminar database
+      consumes:
+        - application/json
+      parameters:
+        - name: crear_record
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              nombre:
+                type: string
+                example: 'database_db'
+                description: Nombre de la db
+              usuario:
+                type: string
+                example: 'usr'
+                description: Usuario db
+              password:
+                type: string
+                example: 'pass'
+                description: Password db
+              db_nombre:
+                type: string
+                example: 'nombre_db'
+                description: DBMS Nombre de la base de datos
+              db_user:
+                type: string
+                example: 'usuario_db'
+                description: DBMS Usuario de la base de datos
+              db_password:
+                type: string
+                example: 'contraseña_db'
+                description: DBMS Contraseña de la base de datos
+              db_host:
+                type: string
+                example: 'host_db'
+                description: DBMS Host de la base de datos
+              db_port:
+                type: string
+                example: 'puerto_db'
+                description: DBMS Puerto de la base de datos
+      responses:
+        201:
+          description: Eliminado exitosamente
+        400:
+          description: Bad request
+        500:
+          description: Internal server error      
+ 
+  /reportes-download:
+    x-order: 7
+    post:
+      summary: descarga reportes 
+      consumes:
+        - application/json
+      parameters:
+        - name: descarga reporte
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              nombre_backup:
+                type: string
+                example: nombre_objeto123
+                description: nombre objeto reporte 
+      responses:
+        201:
+          description: Reporte recuperado exitosamente
+        400:
+          description: Bad request
+        500:
+          description: Internal server error      
+  /reportes-listar:
+    x-order: 9
+    get:
+      summary: lista reportes 
+      consumes:
+        - application/json
+      responses:
+        201:
+          description: Lista reportes recuperado exitosamente
+        400:
+          description: Bad request
+        500:
+          description: Internal server error      
+  /reportes-upload:
+      x-order: 6
+      post:
+        summary: Subir reporte
+        consumes:
+          - multipart/form-data
+        parameters:
+          - name: file
+            in: formData
+            description: El reporte a subir
+            required: true
+            type: file
+        responses:
+          200:
+            description: File uploaded successfully
+          400:
+            description: Bad request
+          500:
+            description: Internal server error

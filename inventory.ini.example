@@ -1,0 +1,2 @@
+[c1]
+c1 ansible_host=10.10.10.10 ip=10.10.10.10 ansible_user=ejemplo ansible_ssh_common_args="-o StrictHostKeyChecking=no" become_method=sudo become=yes
